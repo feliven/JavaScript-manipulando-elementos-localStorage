@@ -13,9 +13,7 @@ function criarElementoTarefa() {
         <circle cx="12" cy="12" r="12" fill="#FFF"></circle>
         <path d="M9 16.1719L19.5938 5.57812L21 6.98438L9 18.9844L3.42188 13.4062L4.82812 12L9 16.1719Z" fill="#01080E"></path>
         </svg>
-      <p class="app__section-task-list-item-description">
-          ${tarefa.descricaoTarefa}
-      </p>
+      <p class="app__section-task-list-item-description">${tarefa.descricaoTarefa}</p>
       <button class="app_button-edit">
           <img src="/imagens/edit.png">
       </button>
@@ -41,4 +39,17 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   criarElementoTarefa();
   campoTextoAdicionarTarefa.value = "";
   formularioAdicionarTarefa.classList.add("hidden");
+});
+
+const botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+
+console.log(botoesEditarTarefa);
+
+botoesEditarTarefa.forEach((botao) => {
+  botao.onclick = () => {
+    let nomeTarefa = botao.parentElement.querySelector("p");
+    const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
+    nomeTarefa.textContent = novoNomeTarefa;
+    console.log(novoNomeTarefa);
+  };
 });
