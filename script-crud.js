@@ -5,10 +5,37 @@ const elementoListaTarefas = document.querySelector(".app__section-task-list");
 
 const listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
 
-let botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+function adicionarListenerEdicao() {
+  const botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+
+botoesEditarTarefa.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const indice = Number(botao.dataset.index);
+      const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
+      
+      if (!novoNomeTarefa) {
+        alert("Nome inválido!");
+        return;
+      }
+
+      // 1. Atualiza o array
+      listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
+
+      // 2. Persiste no localStorage
+      localStorage.setItem(
+        "listaTarefas",
+        JSON.stringify(listaTarefas)
+      );
+
+      // 3. Refaz a lista na tela
+      criarElementoTarefa();
+    });
+  });
+}
+
 
 function criarElementoTarefa() {
-  listaTarefas.forEach((tarefa) => {
+  listaTarefas.forEach((tarefa, indice) => {
     const elementoTarefa = `
     <li class="app__section-task-list-item">
     <svg class="app__section-task-icon-status" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,7 +43,7 @@ function criarElementoTarefa() {
     <path d="M9 16.1719L19.5938 5.57812L21 6.98438L9 18.9844L3.42188 13.4062L4.82812 12L9 16.1719Z" fill="#01080E"></path>
     </svg>
     <p class="app__section-task-list-item-description">${tarefa.descricaoTarefa}</p>
-    <button class="app_button-edit">
+    <button class="app_button-edit" data-index="${indice}">
     <img src="/imagens/edit.png">
     </button>
     </li>
@@ -46,7 +73,7 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   formularioAdicionarTarefa.classList.add("hidden");
 });
 
-botoesEditarTarefa.forEach((botao) => {
+/* botoesEditarTarefa.forEach((botao) => {
   botao.onclick = () => {
     let nomeTarefa = botao.parentElement.querySelector("p");
     const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
@@ -59,3 +86,4 @@ botoesEditarTarefa.forEach((botao) => {
     }
   };
 });
+*/
