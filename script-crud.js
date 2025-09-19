@@ -5,7 +5,7 @@ const elementoListaTarefas = document.querySelector(".app__section-task-list");
 
 const listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
 
-let botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+let botoesEditarTarefa;
 
 function criarElementoTarefa() {
   listaTarefas.forEach((tarefa, indice) => {
@@ -23,8 +23,32 @@ function criarElementoTarefa() {
     `;
 
     elementoListaTarefas.innerHTML += elementoTarefa;
+  });
+  atualizaBotoesEditar();
+}
 
-    botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+function atualizaBotoesEditar() {
+  botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+
+  botoesEditarTarefa.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const indice = Number(botao.dataset.index);
+      const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
+
+      if (!novoNomeTarefa) {
+        alert("ERRO");
+        return;
+      }
+
+      // atualiza o array
+      listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
+      localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+
+      // innerHTML = "" destroys the DOM elements and creates new ones.
+      // This removes all previously attached event listeners.
+      elementoListaTarefas.innerHTML = "";
+      criarElementoTarefa();
+    });
   });
 }
 
@@ -45,31 +69,7 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   formularioAdicionarTarefa.classList.add("hidden");
 });
 
-function adicionarListenerEdicao() {
-  botoesEditarTarefa.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const indice = Number(botao.dataset.index);
-      const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
-
-      if (!novoNomeTarefa) {
-        alert("ERRO");
-        return;
-      }
-
-      // atualiza o array
-      listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
-      localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
-
-      elementoListaTarefas.innerHTML = "";
-      criarElementoTarefa();
-
-      botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
-    });
-  });
-}
-
 criarElementoTarefa();
-adicionarListenerEdicao();
 
 /* botoesEditarTarefa.forEach((botao) => {
   botao.onclick = () => {
