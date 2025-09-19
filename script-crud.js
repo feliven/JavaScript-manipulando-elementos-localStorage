@@ -24,10 +24,14 @@ function criarElementoTarefa() {
 
     elementoListaTarefas.innerHTML += elementoTarefa;
   });
-  atualizaBotoesEditar();
+  atualizarBotoesEditar();
 }
 
-function atualizaBotoesEditar() {
+function atualizarTarefas() {
+  localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+}
+
+function atualizarBotoesEditar() {
   botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
 
   botoesEditarTarefa.forEach((botao) => {
@@ -42,7 +46,7 @@ function atualizaBotoesEditar() {
 
       // atualiza o array
       listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
-      localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+      atualizarTarefas();
 
       // innerHTML = "" destroys the DOM elements and creates new ones.
       // This removes all previously attached event listeners.
@@ -60,7 +64,7 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   evento.preventDefault();
   const tarefa = { descricaoTarefa: campoTextoAdicionarTarefa.value };
   listaTarefas.push(tarefa);
-  localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+  atualizarTarefas();
 
   elementoListaTarefas.innerHTML = "";
   criarElementoTarefa();
