@@ -1,28 +1,32 @@
+// lista de tarefas a ser montada no DOM
+const elementoListaTarefas = document.querySelector(".app__section-task-list");
+
+// interface para adicionar nova tarefa
 const botaoAdicionarTarefa = document.querySelector(".app__button--add-task");
 const formularioAdicionarTarefa = document.querySelector(".app__form-add-task");
 const campoTextoAdicionarTarefa = document.querySelector(".app__form-textarea");
-const elementoListaTarefas = document.querySelector(".app__section-task-list");
-
-const listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
-
-let botoesEditarTarefa;
-
 const botaoCancelar = document.querySelector(".app__form-footer__button--cancel");
-
-botaoCancelar.addEventListener("click", () => {
-  ocultarELimparCampoAdicionarTarefa();
-});
-
 const botaoDeletar = document.querySelector(".app__form-footer__button--delete");
 
-botaoDeletar.addEventListener("click", () => {
-  campoTextoAdicionarTarefa.value = "";
-});
+// puxa lista salva no localStorage
+const listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
 
-const paragrafoDescricaoTarefa = document.querySelector(".app__section-active-task-description");
-console.log(paragrafoDescricaoTarefa);
+// mostra tarefa em andamento (última a ser clicada)
+let paragrafoDescricaoTarefa = document.querySelector(".app__section-active-task-description");
+let itensListaTarefas = document.querySelectorAll(".app__section-task-list-item");
 
-function criarElementoTarefa() {
+// permite editar tarefas
+let botoesEditarTarefa;
+
+function atualizarTarefas() {
+  localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+}
+
+function criarElementoDOMParaTarefas() {
+  elementoListaTarefas.innerHTML = "";
+  // innerHTML = "" destroys the DOM elements and creates new ones.
+  // This removes all previously attached event listeners.
+
   listaTarefas.forEach((tarefa, indice) => {
     const elementoTarefa = `
     <li class="app__section-task-list-item">
@@ -37,18 +41,21 @@ function criarElementoTarefa() {
     </li>
     `;
 
-    paragrafoDescricaoTarefa.textContent = tarefa.descricaoTarefa;
     elementoListaTarefas.innerHTML += elementoTarefa;
   });
   atualizarBotoesEditar();
 }
 
-function atualizarTarefas() {
-  localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
-}
-
 function atualizarBotoesEditar() {
   botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+  itensListaTarefas = document.querySelectorAll(".app__section-task-list-item");
+
+  itensListaTarefas.forEach((item) => {
+    item.addEventListener("click", (evento) => {
+      itemClicado = evento.target;
+      paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
+    });
+  });
 
   botoesEditarTarefa.forEach((botao) => {
     botao.addEventListener("click", () => {
@@ -64,10 +71,7 @@ function atualizarBotoesEditar() {
       listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
       atualizarTarefas();
 
-      elementoListaTarefas.innerHTML = "";
-      // innerHTML = "" destroys the DOM elements and creates new ones.
-      // This removes all previously attached event listeners.
-      criarElementoTarefa();
+      criarElementoDOMParaTarefas();
     });
   });
 }
@@ -82,10 +86,17 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   listaTarefas.push(tarefa);
   atualizarTarefas();
 
-  elementoListaTarefas.innerHTML = "";
-  criarElementoTarefa();
+  criarElementoDOMParaTarefas();
 
   ocultarELimparCampoAdicionarTarefa();
+});
+
+botaoCancelar.addEventListener("click", () => {
+  ocultarELimparCampoAdicionarTarefa();
+});
+
+botaoDeletar.addEventListener("click", () => {
+  campoTextoAdicionarTarefa.value = "";
 });
 
 function ocultarELimparCampoAdicionarTarefa() {
@@ -93,19 +104,4 @@ function ocultarELimparCampoAdicionarTarefa() {
   formularioAdicionarTarefa.classList.add("hidden");
 }
 
-criarElementoTarefa();
-
-/* botoesEditarTarefa.forEach((botao) => {
-  botao.onclick = () => {
-    let nomeTarefa = botao.parentElement.querySelector("p");
-    const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
-    
-    if (novoNomeTarefa) {
-      nomeTarefa.textContent = novoNomeTarefa;
-      console.log(novoNomeTarefa);
-      } else {
-        alert("ERRO");
-    }
-    };
-    });
-*/
+criarElementoDOMParaTarefas();
