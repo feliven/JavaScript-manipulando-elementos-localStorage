@@ -7,6 +7,18 @@ const listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
 
 let botoesEditarTarefa;
 
+const botaoCancelar = document.querySelector(".app__form-footer__button--cancel");
+
+botaoCancelar.addEventListener("click", () => {
+  ocultarELimparCampoAdicionarTarefa();
+});
+
+const botaoDeletar = document.querySelector(".app__form-footer__button--delete");
+
+botaoDeletar.addEventListener("click", () => {
+  //
+});
+
 function criarElementoTarefa() {
   listaTarefas.forEach((tarefa, indice) => {
     const elementoTarefa = `
@@ -69,9 +81,13 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   elementoListaTarefas.innerHTML = "";
   criarElementoTarefa();
 
+  ocultarELimparCampoAdicionarTarefa();
+});
+
+function ocultarELimparCampoAdicionarTarefa() {
   campoTextoAdicionarTarefa.value = "";
   formularioAdicionarTarefa.classList.add("hidden");
-});
+}
 
 criarElementoTarefa();
 
