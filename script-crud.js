@@ -5,34 +5,7 @@ const elementoListaTarefas = document.querySelector(".app__section-task-list");
 
 const listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
 
-function adicionarListenerEdicao() {
-  const botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
-
-botoesEditarTarefa.forEach((botao) => {
-    botao.addEventListener("click", () => {
-      const indice = Number(botao.dataset.index);
-      const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
-      
-      if (!novoNomeTarefa) {
-        alert("Nome inválido!");
-        return;
-      }
-
-      // 1. Atualiza o array
-      listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
-
-      // 2. Persiste no localStorage
-      localStorage.setItem(
-        "listaTarefas",
-        JSON.stringify(listaTarefas)
-      );
-
-      // 3. Refaz a lista na tela
-      criarElementoTarefa();
-    });
-  });
-}
-
+let botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
 
 function criarElementoTarefa() {
   listaTarefas.forEach((tarefa, indice) => {
@@ -55,9 +28,6 @@ function criarElementoTarefa() {
   });
 }
 
-criarElementoTarefa();
-console.log(botoesEditarTarefa);
-
 botaoAdicionarTarefa.addEventListener("click", () => {
   formularioAdicionarTarefa.classList.remove("hidden");
 });
@@ -67,23 +37,51 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   const tarefa = { descricaoTarefa: campoTextoAdicionarTarefa.value };
   listaTarefas.push(tarefa);
   localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+
   elementoListaTarefas.innerHTML = "";
   criarElementoTarefa();
+
   campoTextoAdicionarTarefa.value = "";
   formularioAdicionarTarefa.classList.add("hidden");
 });
+
+function adicionarListenerEdicao() {
+  botoesEditarTarefa.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const indice = Number(botao.dataset.index);
+      const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
+
+      if (!novoNomeTarefa) {
+        alert("ERRO");
+        return;
+      }
+
+      // atualiza o array
+      listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
+      localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+
+      elementoListaTarefas.innerHTML = "";
+      criarElementoTarefa();
+
+      botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
+    });
+  });
+}
+
+criarElementoTarefa();
+adicionarListenerEdicao();
 
 /* botoesEditarTarefa.forEach((botao) => {
   botao.onclick = () => {
     let nomeTarefa = botao.parentElement.querySelector("p");
     const novoNomeTarefa = prompt("Digite o novo nome da tarefa:");
-
+    
     if (novoNomeTarefa) {
       nomeTarefa.textContent = novoNomeTarefa;
       console.log(novoNomeTarefa);
-    } else {
-      alert("ERRO");
+      } else {
+        alert("ERRO");
     }
-  };
-});
+    };
+    });
 */
