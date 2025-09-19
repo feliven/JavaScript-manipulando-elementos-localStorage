@@ -16,8 +16,11 @@ botaoCancelar.addEventListener("click", () => {
 const botaoDeletar = document.querySelector(".app__form-footer__button--delete");
 
 botaoDeletar.addEventListener("click", () => {
-  //
+  campoTextoAdicionarTarefa.value = "";
 });
+
+const paragrafoDescricaoTarefa = document.querySelector(".app__section-active-task-description");
+console.log(paragrafoDescricaoTarefa);
 
 function criarElementoTarefa() {
   listaTarefas.forEach((tarefa, indice) => {
@@ -34,6 +37,7 @@ function criarElementoTarefa() {
     </li>
     `;
 
+    paragrafoDescricaoTarefa.textContent = tarefa.descricaoTarefa;
     elementoListaTarefas.innerHTML += elementoTarefa;
   });
   atualizarBotoesEditar();
@@ -60,9 +64,9 @@ function atualizarBotoesEditar() {
       listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
       atualizarTarefas();
 
+      elementoListaTarefas.innerHTML = "";
       // innerHTML = "" destroys the DOM elements and creates new ones.
       // This removes all previously attached event listeners.
-      elementoListaTarefas.innerHTML = "";
       criarElementoTarefa();
     });
   });
