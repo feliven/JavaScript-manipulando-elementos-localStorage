@@ -46,7 +46,7 @@ function criarElementoDOMParaTarefas() {
   atualizarBotoesEditar();
 }
 
-let indiceTarefaAtiva = 0;
+let tarefaClicadaEstaAtiva = false;
 
 function atualizarBotoesEditar() {
   botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
@@ -64,16 +64,16 @@ function atualizarBotoesEditar() {
 
       // confere se usuário clicou no botão Editar, que é uma imagem
       if (itemClicado.tagName != "IMG") {
-        if (indiceTarefaAtiva == 0) {
+        if (tarefaClicadaEstaAtiva == false) {
           // ativa borda ao redor da tarefa clicada se ela estiver inativa
           item.classList.add("app__section-task-list-item-active");
           paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
-          indiceTarefaAtiva = 1;
+          tarefaClicadaEstaAtiva = true;
         } else {
           // desaativa borda ao redor da tarefa clicada se ela estiver ativa
           item.classList.remove("app__section-task-list-item-active");
           paragrafoDescricaoTarefa.textContent = "Nenhuma";
-          indiceTarefaAtiva = 0;
+          tarefaClicadaEstaAtiva = false;
         }
       }
     });
