@@ -29,7 +29,7 @@ function criarElementoDOMParaTarefas() {
 
   listaTarefas.forEach((tarefa, indice) => {
     const elementoTarefa = `
-    <li class="app__section-task-list-item ">
+    <li class="app__section-task-list-item">
     <svg class="app__section-task-icon-status" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="12" cy="12" r="12" fill="#FFF"></circle>
     <path d="M9 16.1719L19.5938 5.57812L21 6.98438L9 18.9844L3.42188 13.4062L4.82812 12L9 16.1719Z" fill="#01080E"></path>
@@ -46,17 +46,33 @@ function criarElementoDOMParaTarefas() {
   atualizarBotoesEditar();
 }
 
+let indiceTarefaAtiva = 0;
+
 function atualizarBotoesEditar() {
   botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
   itensListaTarefas = document.querySelectorAll(".app__section-task-list-item");
 
   itensListaTarefas.forEach((item) => {
     item.addEventListener("click", (evento) => {
-      itemClicado = evento.target;
-      paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
+      let itensAtivos = document.querySelectorAll(".app__section-task-list-item-active");
+      // remove borda ao redor de todas as tarefas
+      itensAtivos.forEach((itemAtivo) => {
+        itemAtivo.classList.remove("app__section-task-list-item-active");
+      });
 
-      // ativa borda ao redor da tarefa
-      item.classList.toggle("app__section-task-list-item-active");
+      itemClicado = evento.target;
+
+      if (indiceTarefaAtiva == 0) {
+        // ativa borda ao redor da tarefa clicada se ela estiver inativa
+        item.classList.add("app__section-task-list-item-active");
+        paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
+        indiceTarefaAtiva = 1;
+      } else {
+        // desaativa borda ao redor da tarefa clicada se ela estiver ativa
+        item.classList.remove("app__section-task-list-item-active");
+        paragrafoDescricaoTarefa.textContent = "Nenhuma";
+        indiceTarefaAtiva = 0;
+      }
     });
   });
 
