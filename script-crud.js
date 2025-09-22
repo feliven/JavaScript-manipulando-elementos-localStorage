@@ -1,3 +1,5 @@
+"use strict";
+
 // lista de tarefas a ser montada no DOM
 const elementoListaTarefas = document.querySelector(".app__section-task-list");
 
@@ -54,20 +56,25 @@ function atualizarBotoesEditar() {
 
   itensListaTarefas.forEach((item) => {
     item.addEventListener("click", (evento) => {
-      itemClicado = evento.target;
+      const itemClicado = evento.target;
+
+      if (itemClicado.closest(".app_button-edit")) {
+        return; // bail out before changing active selection
+      }
 
       tarefaClicadaEstaAtiva =
         itemClicado.classList.contains("app__section-task-list-item-active") ||
         itemClicado.parentElement.classList.contains("app__section-task-list-item-active");
-      console.log(tarefaClicadaEstaAtiva);
 
       // remove borda ao redor de todas as tarefas
       document.querySelectorAll(".app__section-task-list-item-active").forEach((itemAtivo) => {
         itemAtivo.classList.remove("app__section-task-list-item-active");
       });
 
-      // confere se usuário clicou no botão Editar, que é uma imagem
-      if (itemClicado.tagName != "IMG") {
+      // confere se usuário clicou no botão Editar, que tem classe "app_button-edit", ou se clicou no ícone, que é uma imagem
+
+      if (itemClicado.classList.contains("app_button-edit") || itemClicado.tagName == "IMG") {
+      } else {
         if (tarefaClicadaEstaAtiva === false) {
           // ativa borda ao redor da tarefa clicada se ela estiver inativa
           item.classList.add("app__section-task-list-item-active");
@@ -108,6 +115,14 @@ botaoAdicionarTarefa.addEventListener("click", () => {
 
 formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   evento.preventDefault();
+
+  /*   // evita criar tarefas vazias
+  const inputAdicionarTarefa = (campoTextoAdicionarTarefa.value || "").trim();
+  if (!inputAdicionarTarefa) {
+    alert("Digite uma descrição válida.");
+    return;
+  } */
+
   const tarefa = { descricaoTarefa: campoTextoAdicionarTarefa.value };
   listaTarefas.push(tarefa);
   atualizarTarefas();
