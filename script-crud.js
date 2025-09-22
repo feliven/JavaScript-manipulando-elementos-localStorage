@@ -95,6 +95,7 @@ function atualizarBotoesEditar() {
           itemClicado.parentElement.classList.remove("app__section-task-list-item-active");
           paragrafoDescricaoTarefa.textContent = "Nenhuma";
 
+          liTarefaClicada = null;
           tarefaClicada = null;
         }
         console.log(tarefaClicada);
