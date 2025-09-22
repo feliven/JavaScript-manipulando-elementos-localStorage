@@ -161,5 +161,9 @@ function ocultarELimparCampoAdicionarTarefa() {
 criarElementoDOMParaTarefas();
 
 document.addEventListener("FocoFinalizado", () => {
-  // body
+  if (tarefaClicada && liTarefaClicada) {
+    liTarefaClicada.classList.remove("app__section-task-list-item-active");
+    liTarefaClicada.classList.add("app__section-task-list-item-complete");
+    liTarefaClicada.querySelector("button").setAttribute("disabled", "disabled");
+  }
 });

@@ -19,7 +19,7 @@ const botaoComecarPausar = document.querySelector("#start-pause");
 const relogioTimer = document.querySelector(".app__card-timer");
 
 /// intervalos de tempo em segundos e variáveis auxiliares
-const tempoFoco = 25 * 60;
+const tempoFoco = 3;
 // const tempoDescansoCurto = 5 * 60;
 const tempoDescansoCurto = 5;
 const tempoDescansoLongo = 15 * 60;
