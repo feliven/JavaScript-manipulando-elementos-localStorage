@@ -54,17 +54,17 @@ function atualizarBotoesEditar() {
 
   itensListaTarefas.forEach((item) => {
     item.addEventListener("click", (evento) => {
+      itemClicado = evento.target;
+
       let itensAtivos = document.querySelectorAll(".app__section-task-list-item-active");
       // remove borda ao redor de todas as tarefas
       itensAtivos.forEach((itemAtivo) => {
         itemAtivo.classList.remove("app__section-task-list-item-active");
       });
 
-      itemClicado = evento.target;
-
       // confere se usuário clicou no botão Editar, que é uma imagem
       if (itemClicado.tagName != "IMG") {
-        if (tarefaClicadaEstaAtiva == false) {
+        if (tarefaClicadaEstaAtiva === false) {
           // ativa borda ao redor da tarefa clicada se ela estiver inativa
           item.classList.add("app__section-task-list-item-active");
           paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
