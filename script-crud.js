@@ -62,16 +62,19 @@ function atualizarBotoesEditar() {
 
       itemClicado = evento.target;
 
-      if (indiceTarefaAtiva == 0) {
-        // ativa borda ao redor da tarefa clicada se ela estiver inativa
-        item.classList.add("app__section-task-list-item-active");
-        paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
-        indiceTarefaAtiva = 1;
-      } else {
-        // desaativa borda ao redor da tarefa clicada se ela estiver ativa
-        item.classList.remove("app__section-task-list-item-active");
-        paragrafoDescricaoTarefa.textContent = "Nenhuma";
-        indiceTarefaAtiva = 0;
+      // confere se usuário clicou no botão Editar, que é uma imagem
+      if (itemClicado.tagName != "IMG") {
+        if (indiceTarefaAtiva == 0) {
+          // ativa borda ao redor da tarefa clicada se ela estiver inativa
+          item.classList.add("app__section-task-list-item-active");
+          paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
+          indiceTarefaAtiva = 1;
+        } else {
+          // desaativa borda ao redor da tarefa clicada se ela estiver ativa
+          item.classList.remove("app__section-task-list-item-active");
+          paragrafoDescricaoTarefa.textContent = "Nenhuma";
+          indiceTarefaAtiva = 0;
+        }
       }
     });
   });
