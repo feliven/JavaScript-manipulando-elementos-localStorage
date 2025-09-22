@@ -130,6 +130,14 @@ const contagemRegressiva = () => {
     pararMusica();
     somBeep.play();
     alert("Tempo esgotado!");
+
+    const focoEstaAtivo = html.getAttribute("data-contexto") == "foco";
+    if (focoEstaAtivo) {
+      // cria evento avisando que foco está ativo
+      const evento = new CustomEvent("FocoFinalizado");
+      document.dispatchEvent(evento);
+    }
+
     zerarTimer();
     somBeep.pause();
     return;
