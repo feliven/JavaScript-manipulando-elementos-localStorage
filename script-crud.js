@@ -56,9 +56,13 @@ function atualizarBotoesEditar() {
     item.addEventListener("click", (evento) => {
       itemClicado = evento.target;
 
-      let itensAtivos = document.querySelectorAll(".app__section-task-list-item-active");
+      tarefaClicadaEstaAtiva =
+        itemClicado.classList.contains("app__section-task-list-item-active") ||
+        itemClicado.parentElement.classList.contains("app__section-task-list-item-active");
+      console.log(tarefaClicadaEstaAtiva);
+
       // remove borda ao redor de todas as tarefas
-      itensAtivos.forEach((itemAtivo) => {
+      document.querySelectorAll(".app__section-task-list-item-active").forEach((itemAtivo) => {
         itemAtivo.classList.remove("app__section-task-list-item-active");
       });
 
@@ -67,13 +71,13 @@ function atualizarBotoesEditar() {
         if (tarefaClicadaEstaAtiva === false) {
           // ativa borda ao redor da tarefa clicada se ela estiver inativa
           item.classList.add("app__section-task-list-item-active");
+          itemClicado.parentElement.classList.add("app__section-task-list-item-active");
           paragrafoDescricaoTarefa.textContent = itemClicado.textContent;
-          tarefaClicadaEstaAtiva = true;
         } else {
-          // desaativa borda ao redor da tarefa clicada se ela estiver ativa
+          // desativa borda ao redor da tarefa clicada se ela estiver ativa
           item.classList.remove("app__section-task-list-item-active");
+          itemClicado.parentElement.classList.remove("app__section-task-list-item-active");
           paragrafoDescricaoTarefa.textContent = "Nenhuma";
-          tarefaClicadaEstaAtiva = false;
         }
       }
     });
