@@ -226,6 +226,31 @@ function limparConcluidasOuTodas(concluidasOuTodas) {
   atualizarTarefas();
 }
 
-botaoLimparTarefasConcluidas.onclick = () => limparConcluidasOuTodas("concluidas");
+function limparComTernario(somenteConcluidas) {
+  let classeConcluidasOuTodas = somenteConcluidas
+    ? ".app__section-task-list-item-complete"
+    : ".app__section-task-list-item";
 
-botaoLimparTodasTarefas.onclick = () => limparConcluidasOuTodas("todas");
+  document.querySelectorAll(classeConcluidasOuTodas).forEach((classe) => {
+    classe.remove();
+  });
+
+  listaTarefas = somenteConcluidas ? listaTarefas.filter((tarefa) => !tarefa.completa) : [];
+  atualizarTarefas();
+}
+
+function limparAleatorio() {
+  const condicaoAleatoria = Math.random() < 0.5;
+  console.log(condicaoAleatoria);
+  if (condicaoAleatoria) {
+    console.log("minha");
+    botaoLimparTarefasConcluidas.onclick = () => limparConcluidasOuTodas("concluidas");
+    botaoLimparTodasTarefas.onclick = () => limparConcluidasOuTodas("todas");
+  } else {
+    console.log("ternario");
+    botaoLimparTarefasConcluidas.onclick = () => limparComTernario(true);
+    botaoLimparTodasTarefas.onclick = () => limparComTernario(false);
+  }
+}
+
+limparAleatorio();
