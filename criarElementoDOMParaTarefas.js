@@ -1,5 +1,5 @@
 import { atualizarBotoesEditar } from "./atualizarBotoesEditar.js";
-import { listaTarefas } from "./funcoesLocalStorage.js";
+import { getListaTarefas } from "./funcoesLocalStorage.js";
 
 // lista de tarefas a ser montada no DOM
 const elementoListaTarefas = document.querySelector(".app__section-task-list");
@@ -8,6 +8,9 @@ export function criarElementoDOMParaTarefas() {
   elementoListaTarefas.innerHTML = "";
   // innerHTML = "" destroys the DOM elements and creates new ones.
   // This removes all previously attached event listeners.
+
+  let listaTarefas = getListaTarefas();
+  // Always call getListaTarefas() right before using, and only mutate via functions provided by the storage module. That’s the “single source of truth” pattern and prevents stale references.
 
   listaTarefas.forEach((tarefa, indice) => {
     let classeTarefaCompleta;

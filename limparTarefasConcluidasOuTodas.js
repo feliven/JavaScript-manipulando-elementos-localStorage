@@ -1,7 +1,8 @@
-import { listaTarefas, atualizarTarefas } from "./funcoesLocalStorage.js";
-// let listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
+import { getListaTarefas, setListaTarefas } from "./funcoesLocalStorage.js";
 
-// permite limpar tarefas (só concluídas ou todas elas)
+let listaTarefas = getListaTarefas();
+
+// botões para limpar tarefas (só concluídas ou todas elas)
 const botaoLimparTarefasConcluidas = document.getElementById("btn-remover-concluidas");
 const botaoLimparTodasTarefas = document.getElementById("btn-remover-todas");
 
@@ -30,7 +31,7 @@ function limparConcluidasOuTodas(concluidasOuTodas) {
     listaTarefas = [];
   }
 
-  atualizarTarefas();
+  setListaTarefas(listaTarefas);
 }
 
 function limparComTernario(somenteConcluidas) {
@@ -43,7 +44,7 @@ function limparComTernario(somenteConcluidas) {
   });
 
   listaTarefas = somenteConcluidas ? listaTarefas.filter((tarefa) => !tarefa.completa) : [];
-  atualizarTarefas();
+  setListaTarefas(listaTarefas);
 }
 
 export function limparAleatorio() {

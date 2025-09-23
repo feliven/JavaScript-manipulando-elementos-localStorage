@@ -2,7 +2,7 @@
 
 import { criarElementoDOMParaTarefas } from "./criarElementoDOMParaTarefas.js";
 import { tarefaClicada, liTarefaClicada } from "./atualizarBotoesEditar.js";
-import { listaTarefas, atualizarTarefas } from "./funcoesLocalStorage.js";
+import { getListaTarefas, adicionarTarefa, setListaTarefas } from "./funcoesLocalStorage.js";
 import { limparAleatorio } from "./limparTarefasConcluidasOuTodas.js";
 
 // interface para adicionar nova tarefa
@@ -28,8 +28,7 @@ formularioAdicionarTarefa.addEventListener("submit", (evento) => {
   } */
 
   const tarefa = { descricaoTarefa: campoTextoAdicionarTarefa.value };
-  listaTarefas.push(tarefa);
-  atualizarTarefas();
+  adicionarTarefa(tarefa);
 
   criarElementoDOMParaTarefas();
 
@@ -52,6 +51,8 @@ function ocultarELimparCampoAdicionarTarefa() {
 criarElementoDOMParaTarefas();
 
 document.addEventListener("FocoFinalizado", () => {
+  let listaTarefas = getListaTarefas();
+
   if (tarefaClicada && liTarefaClicada) {
     liTarefaClicada.classList.remove("app__section-task-list-item-active");
     liTarefaClicada.classList.add("app__section-task-list-item-complete");
@@ -64,7 +65,9 @@ document.addEventListener("FocoFinalizado", () => {
 
     // salva no localStorage a informação de que a tarefa foi completa
     listaTarefas[posicao].completa = true;
-    atualizarTarefas();
+
+    console.log(listaTarefas);
+    setListaTarefas(listaTarefas);
   }
 });
 

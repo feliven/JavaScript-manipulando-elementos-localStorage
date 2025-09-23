@@ -1,5 +1,5 @@
 import { criarElementoDOMParaTarefas } from "./criarElementoDOMParaTarefas.js";
-import { listaTarefas, atualizarTarefas } from "./funcoesLocalStorage.js";
+import { getListaTarefas, setListaTarefas } from "./funcoesLocalStorage.js";
 
 // mostra tarefa em andamento (última a ser clicada)
 let paragrafoDescricaoTarefa = document.querySelector(".app__section-active-task-description");
@@ -12,6 +12,8 @@ export let tarefaClicada = null;
 export let liTarefaClicada = null;
 
 export function atualizarBotoesEditar() {
+  let listaTarefas = getListaTarefas();
+
   botoesEditarTarefa = document.querySelectorAll(".app_button-edit");
   itensListaTarefas = document.querySelectorAll(".app__section-task-list-item");
 
@@ -79,7 +81,7 @@ export function atualizarBotoesEditar() {
 
       // atualiza o array
       listaTarefas[indice].descricaoTarefa = novoNomeTarefa;
-      atualizarTarefas();
+      setListaTarefas(listaTarefas);
 
       criarElementoDOMParaTarefas();
     });

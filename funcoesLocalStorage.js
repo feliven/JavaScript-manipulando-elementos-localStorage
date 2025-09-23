@@ -1,6 +1,21 @@
 // puxa lista salva no localStorage
-export var listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
+let listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
 
-export function atualizarTarefas() {
+function atualizarTarefas() {
   localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
+}
+
+export function getListaTarefas() {
+  return listaTarefas;
+}
+
+export function setListaTarefas(novaLista) {
+  listaTarefas.length = 0;
+  listaTarefas.push(...novaLista);
+  atualizarTarefas();
+}
+
+export function adicionarTarefa(tarefa) {
+  listaTarefas.push(tarefa);
+  atualizarTarefas();
 }
