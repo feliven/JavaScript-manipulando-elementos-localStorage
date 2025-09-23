@@ -198,40 +198,34 @@ document.addEventListener("FocoFinalizado", () => {
   }
 });
 
-let seletorConcluidasOuTodas;
-let classeConcluidasOuTodas;
+function limparConcluidasOuTodas(concluidasOuTodas) {
+  let classeConcluidasOuTodas;
 
-function limparConcluidasOuTodas(seletorConcluidasOuTodas) {
-  console.log(seletorConcluidasOuTodas);
-  if (seletorConcluidasOuTodas == "concluidas") {
-    classeConcluidasOuTodas = ".app__section-task-list-item-complete";
-  }
-  if (seletorConcluidasOuTodas == "todas") {
-    classeConcluidasOuTodas = ".app__section-task-list-item";
+  switch (concluidasOuTodas) {
+    case "concluidas":
+      classeConcluidasOuTodas = ".app__section-task-list-item-complete";
+      break;
+    case "todas":
+      classeConcluidasOuTodas = ".app__section-task-list-item";
+      break;
+    default:
+      console.warn("Tipo inválido:", concluidasOuTodas);
+      return;
   }
 
-  console.log(document.querySelectorAll(classeConcluidasOuTodas));
   document.querySelectorAll(classeConcluidasOuTodas).forEach((classe) => {
     classe.remove();
   });
 
-  if (seletorConcluidasOuTodas == "concluidas") {
+  if (concluidasOuTodas === "concluidas") {
     listaTarefas = listaTarefas.filter((tarefa) => !tarefa.completa);
-  }
-
-  if (seletorConcluidasOuTodas == "todas") {
+  } else if (concluidasOuTodas === "todas") {
     listaTarefas = [];
   }
 
   atualizarTarefas();
 }
 
-botaoLimparTarefasConcluidas.onclick = () => {
-  seletorConcluidasOuTodas = "concluidas";
-  limparConcluidasOuTodas(seletorConcluidasOuTodas);
-};
+botaoLimparTarefasConcluidas.onclick = () => limparConcluidasOuTodas("concluidas");
 
-botaoLimparTodasTarefas.onclick = () => {
-  seletorConcluidasOuTodas = "todas";
-  limparConcluidasOuTodas(seletorConcluidasOuTodas);
-};
+botaoLimparTodasTarefas.onclick = () => limparConcluidasOuTodas("todas");
