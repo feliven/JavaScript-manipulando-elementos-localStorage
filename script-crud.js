@@ -11,7 +11,7 @@ const botaoCancelar = document.querySelector(".app__form-footer__button--cancel"
 const botaoDeletar = document.querySelector(".app__form-footer__button--delete");
 
 // puxa lista salva no localStorage
-const listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
+let listaTarefas = JSON.parse(localStorage.getItem("listaTarefas")) || [];
 
 // mostra tarefa em andamento (última a ser clicada)
 let paragrafoDescricaoTarefa = document.querySelector(".app__section-active-task-description");
@@ -19,6 +19,10 @@ let itensListaTarefas = document.querySelectorAll(".app__section-task-list-item"
 
 // permite editar tarefas
 let botoesEditarTarefa;
+
+// permite limpar tarefas (só concluídas ou todas elas)
+const botaoLimparTarefasConcluidas = document.getElementById("btn-remover-concluidas");
+const botaoLimparTodasTarefas = document.getElementById("btn-remover-todas");
 
 function atualizarTarefas() {
   localStorage.setItem("listaTarefas", JSON.stringify(listaTarefas));
@@ -114,7 +118,6 @@ function atualizarBotoesEditar() {
             liTarefaClicada = null;
             tarefaClicada = null;
           }
-          console.log(tarefaClicada);
         }
       }
     });
@@ -141,6 +144,7 @@ function atualizarBotoesEditar() {
 
 botaoAdicionarTarefa.addEventListener("click", () => {
   formularioAdicionarTarefa.classList.remove("hidden");
+  campoTextoAdicionarTarefa.focus();
 });
 
 formularioAdicionarTarefa.addEventListener("submit", (evento) => {
@@ -187,10 +191,47 @@ document.addEventListener("FocoFinalizado", () => {
     const parentUL = liTarefaClicada.parentElement;
     const childrenLI = Array.from(parentUL.children);
     const posicao = childrenLI.indexOf(liTarefaClicada);
-    console.log(posicao);
 
     // salva no localStorage a informação de que a tarefa foi completa
     listaTarefas[posicao].completa = true;
     atualizarTarefas();
   }
 });
+
+let seletorConcluidasOuTodas;
+let classeConcluidasOuTodas;
+
+function limparConcluidasOuTodas(seletorConcluidasOuTodas) {
+  console.log(seletorConcluidasOuTodas);
+  if (seletorConcluidasOuTodas == "concluidas") {
+    classeConcluidasOuTodas = ".app__section-task-list-item-complete";
+  }
+  if (seletorConcluidasOuTodas == "todas") {
+    classeConcluidasOuTodas = ".app__section-task-list-item";
+  }
+
+  console.log(document.querySelectorAll(classeConcluidasOuTodas));
+  document.querySelectorAll(classeConcluidasOuTodas).forEach((classe) => {
+    classe.remove();
+  });
+
+  if (seletorConcluidasOuTodas == "concluidas") {
+    listaTarefas = listaTarefas.filter((tarefa) => !tarefa.completa);
+  }
+
+  if (seletorConcluidasOuTodas == "todas") {
+    listaTarefas = [];
+  }
+
+  atualizarTarefas();
+}
+
+botaoLimparTarefasConcluidas.onclick = () => {
+  seletorConcluidasOuTodas = "concluidas";
+  limparConcluidasOuTodas(seletorConcluidasOuTodas);
+};
+
+botaoLimparTodasTarefas.onclick = () => {
+  seletorConcluidasOuTodas = "todas";
+  limparConcluidasOuTodas(seletorConcluidasOuTodas);
+};
