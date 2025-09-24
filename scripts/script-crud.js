@@ -2,7 +2,7 @@
 
 import { criarElementoDOMParaTarefas } from "./criarElementoDOMParaTarefas.js";
 import { tarefaClicada, liTarefaClicada } from "./atualizarBotoesEditar.js";
-import { getListaTarefas, adicionarTarefa, setListaTarefas } from "./funcoesLocalStorage.js";
+import { getListaTarefas, adicionarTarefa, atualizarTarefas } from "./funcoesLocalStorage.js";
 import { limparAleatorio } from "./limparTarefasConcluidasOuTodas.js";
 
 // interface para adicionar nova tarefa
@@ -67,7 +67,7 @@ document.addEventListener("FocoFinalizado", () => {
     listaTarefas[posicao].completa = true;
 
     console.log(listaTarefas);
-    setListaTarefas(listaTarefas);
+    atualizarTarefas();
   }
 });
 
